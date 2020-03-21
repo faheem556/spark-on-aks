@@ -1,17 +1,21 @@
 #!/bin/bash
+set -ea
 
 SCRIPT_DIR=$(dirname $0)
 
 source $SCRIPT_DIR/vars.sh
 
 echo "Creating AAD OAuth objects"
-$SCRIPT_DIR/resources/aad.sh | tee -a aad.log
+source ./$SCRIPT_DIR/scripts/aad.sh
 
 echo "Create Resource group and SP"
-./$SCRIPT_DIR/resources/rg.sh | tee rg.log
+source ./$SCRIPT_DIR/scripts/rg.sh 
 
-echo "Setup Networking"
-./$SCRIPT_DIR/resources/network.sh | tee network.log
+echo "Setting up Networking"
+source ./$SCRIPT_DIR/scripts/network.sh 
 
 echo "Creating Kubernetes cluster"
-./$SCRIPT_DIR/resources/aks.sh | tee aks.log
+source ./$SCRIPT_DIR/scripts/aks.sh
+
+echo "Setting up user access"
+source ./$SCRIPT_DIR/scripts/aad-access.sh

@@ -4,11 +4,17 @@ SCRIPT_DIR=$(dirname $0)
 
 source $SCRIPT_DIR/vars.sh
 
-# echo "Creating ACR objects"
-# ./acr.sh | tee acr.log
+serverApplicationId=`az ad app list --display-name "${AKS_CLUSTER_NAME}Server" --query [0].appId -otsv`
+clientApplicationId=`az ad app list --display-name "${AKS_CLUSTER_NAME}Client" --query [0].appId -otsv`
 
-# echo "Creating Kubernetes cluster"
-# ./aks.sh | tee aks.log
+az ad app   delete --id $serverApplicationId
+az ad app   delete --id $clientApplicationId
 
-echo "Deleting AAD OAuth objects"
-$SCRIPT_DIR/cleanup/aad-cleanup.sh
+az ad sp delete --id http://$AKS_SP_NAME
+az group delete -n $RESOURCE_GROUP
+
+for AKS_AD_GROUP in `echo $AKS_AD_GROUPS`
+do
+  AKS_AD_GROUP_NAME=`echo $AKS_AD_GROUP | cut -d':' -f1`
+  az ad group delete --g $AKS_AD_GROUP_NAME
+done

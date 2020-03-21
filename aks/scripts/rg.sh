@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ea
+
 rgId=""
 
 if `az group show --name $RESOURCE_GROUP > /dev/null`; 
@@ -24,8 +26,8 @@ aksSP=`az ad sp create-for-rbac \
   --output tsv`
 
 export RESOURCE_GROUP_ID=$rgId
-export AKS_SP_ID=$(echo $aksSP | cut -f1)
-export AKS_SP_SECRET=$(echo $aksSP | cut -f4)
+export AKS_SP_ID=$(echo $aksSP | cut -f1 -d' ')
+export AKS_SP_SECRET=$(echo $aksSP | cut -f4 -d' ')
 
 echo "export RESOURCE_GROUP_ID=$rgId"
 echo "export AKS_SP_ID=$(echo $aksSP | cut -f1 -d' ')"
