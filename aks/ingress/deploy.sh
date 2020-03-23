@@ -16,6 +16,7 @@ if ! ./kubectl get ns "$NAMESPACE" >/dev/null 2>&1; then
 fi
 
 # update helm stable chart repo
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm repo update
 
 # upgrade helm release
