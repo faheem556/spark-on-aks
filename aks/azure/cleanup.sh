@@ -11,7 +11,7 @@ az ad app delete --id $serverApplicationId
 az ad app delete --id $clientApplicationId
 
 az group delete -n $RESOURCE_GROUP
-az role definition delete --name $AKS_KUBENET_ROLE --subscription $SUBSCRIPTION
+az role definition delete --name "$AKS_KUBENET_ROLE" --subscription $SUBSCRIPTION
 
 for AKS_AD_GROUP in `echo $AKS_AD_GROUPS`
 do

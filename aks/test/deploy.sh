@@ -10,7 +10,7 @@ regcreds=`az acr credential show --name $AKS_ACR_NAME --query passwords[0].value
   --docker-server=$AKS_ACR_NAME.azurecr.io \
   --docker-username=$AKS_ACR_NAME \
   --docker-password=$regcreds \
-  --docker-email=info@example.com
+  --docker-email=info@placeholder.com
 
 sed "s/\${REGISTRY}/$AKS_ACR_NAME/" $SCRIPT_DIR/hello-world.yaml.tmpl > $SCRIPT_DIR/hello-world.yaml
 ./kubectl apply -f ${SCRIPT_DIR}/

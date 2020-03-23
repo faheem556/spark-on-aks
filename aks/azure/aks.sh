@@ -68,7 +68,7 @@ az aks create \
 principalId=`az aks show -n $AKS_CLUSTER_NAME -g $RESOURCE_GROUP --query identity.principalId -otsv`
 
 echo "Attaching ACR"
-az role assignment create --assignee $principalId --scope $aksACRId --role AcrPull
+az role assignment create --assignee $principalId --scope $aksACRId --role AcrPull > /dev/null
 
 echo "Fixing permissions"
-az role assignment create --assignee $principalId --scope $AKS_VNET_ID --role $AKS_KUBENET_ROLE
+az role assignment create --assignee $principalId --scope $AKS_VNET_ID --role "$AKS_KUBENET_ROLE" > /dev/null
