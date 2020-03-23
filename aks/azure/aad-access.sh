@@ -1,31 +1,16 @@
 #!/bin/bash
 
 set -ea
+SCRIPT_DIR=$(dirname $0)
+$SCRIPT_DIR/../../common/get-kubectl.sh
+$SCRIPT_DIR/get-aks-creds.sh
 
 AKS_ID=`az aks show \
     --resource-group $RESOURCE_GROUP \
     --name $AKS_CLUSTER_NAME \
     --query id -o tsv`
 
-if ! ./kubectl version --client > /dev/null;
-then
-  echo "Download kubectl"
-  arch=linux
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    arch=darwin
-  elif [[ "$OSTYPE" == "win32" ]]; then
-    arch=windows
-  fi
-  curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/$arch/amd64/kubectl
-  chmod +x ./kubectl
-fi
-
-echo "Getting cluster credentials"
-az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME --file kube.config --admin
-export KUBECONFIG=kube.config
-./kubectl version --short
-
-cat <<EOF | kubectl apply -f -
+cat <<EOF | ./kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -39,7 +24,7 @@ rules:
   - watch
 EOF
 
-cat <<EOF | kubectl apply -f -
+cat <<EOF | ./kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -76,7 +61,7 @@ do
 
   echo export $AKS_AD_GROUP_NAME=$GROUP_ID
 
-cat <<EOF | kubectl apply -f -
+cat <<EOF | ./kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

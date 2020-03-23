@@ -1,5 +1,3 @@
-#!/bin/bash
-
 set -a
 
 export NAME_PREFIX="aks-demo"
@@ -23,7 +21,9 @@ export AKS_DOCKER_BRIDGE_CIDR="172.19.0.1/16"
 export AKS_POD_CIDR="172.20.0.0/16"
 export AKS_SERVICE_CIDR="10.0.0.0/16"
 export AKS_SERVICE_DNS="10.0.0.10"
+export INGRESS_LOAD_BALANCER_IP="172.22.20.10"
 export AKS_NETWORK_PLUGIN="kubenet"
+export AKS_KUBENET_ROLE="AKS Kubenet Role"
 
 export AKS_NODE_DISK_SIZE="64"
 export AKS_NODE_VM_SIZE="Standard_DS13_v2" # Standard_E16s_v3

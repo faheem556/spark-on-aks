@@ -2,16 +2,16 @@
 
 SCRIPT_DIR=$(dirname $0)
 
-source $SCRIPT_DIR/vars.sh
+source $SCRIPT_DIR/../vars.sh
 
 serverApplicationId=`az ad app list --display-name "${AKS_CLUSTER_NAME}Server" --query [0].appId -otsv`
 clientApplicationId=`az ad app list --display-name "${AKS_CLUSTER_NAME}Client" --query [0].appId -otsv`
 
-az ad app   delete --id $serverApplicationId
-az ad app   delete --id $clientApplicationId
+az ad app delete --id $serverApplicationId
+az ad app delete --id $clientApplicationId
 
-az ad sp delete --id http://$AKS_SP_NAME
 az group delete -n $RESOURCE_GROUP
+az role definition delete --name $AKS_KUBENET_ROLE --subscription $SUBSCRIPTION
 
 for AKS_AD_GROUP in `echo $AKS_AD_GROUPS`
 do

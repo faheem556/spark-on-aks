@@ -1,1 +1,7 @@
 *.log
+kubectl
+helm*
+get_helm.sh
+kube.config
+hello-world.yaml
+.DS_Store
