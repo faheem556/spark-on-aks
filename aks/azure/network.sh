@@ -55,6 +55,9 @@ az role definition create --role-definition "{ \
     ] \
 }" > /dev/null || :
 
+#az network route-table create -g $RESOURCE_GROUP --name $FWROUTE_TABLE_NAME
+#az network route-table route create -g $RESOURCE_GROUP --name $FWROUTE_NAME --route-table-name $FWROUTE_TABLE_NAME --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address $FWPRIVATE_IP --subscription $SUBID
+#az network route-table route create -g $RESOURCE_GROUP --name $FWROUTE_NAME_INTERNET --route-table-name $FWROUTE_TABLE_NAME --address-prefix $FWPUBLIC_IP/32 --next-hop-type Internet
 
 export AKS_SUBNET_ID=$aksSubnetId
 export AKS_VNET_ID=$vnetId

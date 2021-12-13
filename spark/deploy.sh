@@ -17,19 +17,19 @@ if ! ./kubectl get ns "$NAMESPACE" >/dev/null 2>&1; then
     ./kubectl create ns "$NAMESPACE"
 fi
 
-helm upgrade \
+./helm upgrade \
     --install \
     --force \
-    --wait \
-    --version $SPARK_OPERATOR_CHART_VERSION \
+    --version 0.6.9 \
     --set operatorVersion=v1beta2-1.1.0-2.4.5 \
     --set ingressUrlFormat='\{\{\$appName\}\}.ingress.cluster.com' \
     --set sparkJobNamespace=default \
-    --namespace $NAMESPACE \
+    --namespace spark-operator \
+    --set enableWebhook=true \
     spark-operator \
     incubator/sparkoperator
 
-#    --set enableWebhook=true \
+#     \
 
 # ./kubectl apply -f $SCRIPT_DIR/manifest/crds/
 # ./kubectl apply -f $SCRIPT_DIR/manifest/spark-rbac.yaml

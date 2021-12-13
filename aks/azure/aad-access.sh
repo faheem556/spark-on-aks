@@ -24,56 +24,20 @@ rules:
   - watch
 EOF
 
-cat <<EOF | ./kubectl apply -f -
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
- name: cluster-operators
-rules:
-- apiGroups: ["", "extensions", "apps"]
-  resources: ["*"]
-  verbs: ["*"]
-- apiGroups: ["batch"]
-  resources:
-  - jobs
-  - cronjobs
-  verbs: ["*"]
-EOF
-
-for AKS_AD_GROUP in `echo $AKS_AD_GROUPS`
-do
-  AKS_AD_GROUP_NAME=`echo $AKS_AD_GROUP | cut -d':' -f1`
-  AKS_AD_ROLE=`echo $AKS_AD_GROUP | cut -d':' -f2`
-
-  echo "Creating group $AKS_AD_GROUP_NAME"
-
-  GROUP_ID=`az ad group create \
-        --display-name $AKS_AD_GROUP_NAME \
-        --mail-nickname $AKS_AD_GROUP_NAME \
-        --query objectId -o tsv`
-
-  sleep 30 # wait for the group to be created
-
-  az role assignment create \
-    --assignee $GROUP_ID \
-    --role "Azure Kubernetes Service Cluster User Role" \
-    --scope $AKS_ID > /dev/null
-
-  echo export $AKS_AD_GROUP_NAME=$GROUP_ID
 
 cat <<EOF | ./kubectl apply -f -
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: az-aad-$AKS_AD_ROLE
+  name: aad-aks-admins
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-operations
+  name: cluster-admin
 subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: Group
-    name: $GROUP_ID
+    name: f9b05ccf-6914-40c0-9664-48ef112ade23
 EOF
 
   echo "Add users to $AKS_AD_GROUP_NAME group by running:"

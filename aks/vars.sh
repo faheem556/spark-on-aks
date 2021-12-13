@@ -17,8 +17,8 @@ export AKS_SP_NAME="${NAME_PREFIX}-cluster-sp"
 export AKS_AD_GROUPS="aks-admins:admins" #Roles: admins, readers, operators
 
 export AKS_SUBNET_CIDR="172.22.20.0/24"
-export AKS_DOCKER_BRIDGE_CIDR="172.19.0.1/16"
-export AKS_POD_CIDR="172.20.0.0/16"
+export AKS_DOCKER_BRIDGE_CIDR="172.19.0.1/17"
+export AKS_POD_CIDR="172.19.128.0/17"
 export AKS_SERVICE_CIDR="10.0.0.0/16"
 export AKS_SERVICE_DNS="10.0.0.10"
 export INGRESS_LOAD_BALANCER_IP="172.22.20.10"
@@ -26,12 +26,16 @@ export AKS_NETWORK_PLUGIN="kubenet"
 export AKS_KUBENET_ROLE="AKS Kubenet Role"
 
 export AKS_NODE_DISK_SIZE="64"
-export AKS_NODE_VM_SIZE="Standard_DS13_v2" # Standard_E16s_v3
-export AKS_NODES_MIN=1
-export AKS_NODES_MAX=2
+export AKS_NODE_VM_SIZE="Standard_D2_v2" #Standard_DS13_v2 - Standard_E16s_v3
+export AKS_NODES_MIN=2
+export AKS_NODES_MAX=5
 
 export AKS_LAWS_NAME="${NAME_PREFIX}-laws"
 export AKS_LAWS_RETENTION=60 # days
 export AKS_ADDONS="monitoring"
 
 export TAGS="Owner=email@domain.com Automation=false CostCenter=1234"
+
+export FWROUTE_TABLE_NAME="aks-fw-route"
+export FWROUTE_TABLE_NAME="aks-fw-route"
+export FWROUTE_NAME=""

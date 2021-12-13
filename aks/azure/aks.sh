@@ -32,6 +32,9 @@ if az aks show -n $AKS_CLUSTER_NAME -g $RESOURCE_GROUP > /dev/null; then
   fi
 fi
 
+az provider register --namespace Microsoft.ContainerService || :
+az extension add -n aks-preview --yes
+
 echo "Creating Kubernetes cluster"
 az aks create \
     --subscription $SUBSCRIPTION \
@@ -47,7 +50,7 @@ az aks create \
     --network-plugin $AKS_NETWORK_PLUGIN \
     --network-policy calico \
     --enable-cluster-autoscaler \
-    --node-count 1 \
+    --node-count 2 \
     --min-count $AKS_NODES_MIN \
     --max-count $AKS_NODES_MAX \
     --load-balancer-sku Standard \
